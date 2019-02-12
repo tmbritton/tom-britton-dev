@@ -1,0 +1,12 @@
+baseURL = "https://tom.britton.rocks"
+languageCode = "en-us"
+title = "Tom Britton Rocks"
+theme = "simple-hugo-theme"
+
+# Menu
+[menu]
+  # Header
+  [[menu.main]]
+    url = "/posts/"
+    name = "blog"
+    weight = 1

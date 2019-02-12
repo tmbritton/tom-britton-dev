@@ -1,0 +1,25 @@
+{{ define "main" }}
+
+<header>
+    <h1>
+        {{- .Title | markdownify -}}
+    </h1>
+</header>
+{{/* List all pages */}}
+
+<article>
+    {{ .Content }}
+</article>
+
+<ul>
+    {{ range .Paginator.Pages }}
+    <li>
+        <a href="{{ .RelPermalink }}">
+            {{- .Title | markdownify }}
+        </a>
+        {{ partial "post_meta.html" . }}
+    </li>
+    {{ end }}
+</ul>
+
+{{ end }}
