@@ -3,6 +3,8 @@ languageCode = "en-us"
 title = "Tom Britton Rocks"
 theme = "simple-hugo-theme"
 
+[params] 
+  custom_css = ["css/tbr.css"]
 # Menu
 [menu]
   # Header

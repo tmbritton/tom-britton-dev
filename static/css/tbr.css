@@ -1,0 +1,17 @@
+body {
+    font-family: Gill Sans, Gill Sans MT, Calibri, sans-serif;
+}
+
+.inlineCode {
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+    background-color: #eee;
+}
+
+pre {
+    background-color: #eee;
+    padding: 10px;
+}
+
+code {
+    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+}
