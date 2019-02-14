@@ -1,5 +1,5 @@
 ---
-title: "State Management in Javascript"
+title: "Simple State Management in Javascript"
 date: 2019-02-12T13:34:46-06:00
 draft: false
 ---
@@ -12,7 +12,9 @@ A basic component of any software is a state management system. We all know thin
 
 I wanted two things in a state management system, a pubsub component for events and a centralized data store. Also, to completely contradict my opening statement about dependencies, I wrote it in [Typescript](https://www.typescriptlang.org/). I've been using it at work recently and I find I really like the autocomplete features it provides to the text editor when you define your types.
 
-I first created the [PubSub module](https://github.com/tmbritton/state-manager/blob/master/src/pubsub/PubSub.ts). As you can see in the link to the code I provided, there are just a few methods. The meat of it are the <span class="inlineCode">publish()</span> and <span class="inlineCode">subscribe()</span> methods. A basic use of this module is in the tests. Yes, I actually tested a personal project!
+## PubSub
+
+First I created the [PubSub module](https://github.com/tmbritton/state-manager/blob/master/src/pubsub/PubSub.ts). This is a good 'ole [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE) module. I didn't use a class because we don't want multiple instantiations of the PubSub system in a codebase. That would break the functionality. You can see in the link to the code I provided, there are just a few methods. The meat of it are the <span class="inlineCode">publish()</span> and <span class="inlineCode">subscribe()</span> methods. A basic use of this module is in the tests. Yes, I actually tested a personal project!
 
     test("Publishing an event", () => {
         const type = "test";
@@ -26,5 +28,15 @@ I first created the [PubSub module](https://github.com/tmbritton/state-manager/b
 
 Basically you subscribe to an event type, this case the type is "test". Then you publish an event of the same type with a payload object. This object is then passed to the callback provided to the subscribe method and it acts on the payload. Simple, right?
 
+## Store
 
+The [store module](https://github.com/tmbritton/state-manager/blob/master/src/store/Store.ts) is where the data is held. I did use a class here, but it's debatable whether you'd ever want multiple instantiations of the Store in the application. There may be use cases. ¯\\\_(ツ)\_/¯ The flow here is you call the <span class="inlineCode">commit()</span> function with a type of mutation as the first parameter and a payload for the mutation to act on as the second parameter. The change is then published by the PubSub component.
+
+### Mutations
+
+I lifted mutations directly from VueX. They are functions you define that accept a payload and make changes to state. You don't change state outside of mutations and you only call mutations via the <span class="inlineCode">commit()</span> function. None of this is strictly enforced since I'm making this library for myself. But that's how it's supposed to work.
+
+## Summation
+
+That was a brief introduction on how I put together a simple state management system. I plan to use it in upcoming game projects. It could be used in web development projects as well, but I'd probably want to roll my own 2-way binding and virtual dom to go along with it. If you'd like to read a better article with a similar take, <a href="https://css-tricks.com/build-a-state-management-system-with-vanilla-javascript/">check out this one on CSS Tricks</a>.
 
