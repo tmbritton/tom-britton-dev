@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Simple State Management in Javascript | Tom Britton Rocks</title>
+
+    <style>body{margin:40px auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0 10px}h1,h2,h3{line-height:1.2}div.header h1{padding-top:0;padding-bottom:8px;margin-bottom:24px;font-size:18px;font-weight:400;border-bottom:1px solid}.header-menu{float:right}ul.pagination{list-style-type:none;text-align:center;padding:0}ul.pagination>li{padding:0 8px;display:inline-block}div.footer{border-top:1px solid;text-align:center}img{max-width:100%;max-height:100%;display:block;margin-left:auto;margin-right:auto}</style>
+
+    <link rel="stylesheet" href="https://tom.britton.rocks/css/tbr.css">
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-92169255-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-92169255-2');
+</script>
+</head>
+
+<body>
+<div class="header">
+    <h1>
+        <a href="/">Tom Britton Rocks</a>
+        <div class="header-menu">
+            <a href="/posts/">blog</a>
+        </div>
+    </h1>
+</div>
+<div id="content">
+
+<header>
+    <h1>Simple State Management in Javascript</h1>
+    
+
+<div class="post-meta">
+    Date &#x5b;
+    <time datetime="2019-02-12">Feb 12, 2019</time>
+    &#x5d;
+</div>
+</header>
+<article>
+    
+
+<p>I&rsquo;ve gotten a bit tired of dependencies. Perhaps that&rsquo;s a bit ironic for somebody who does most of his work using javascript frameworks. But after spending yet another chunk of hours trying to upgrade <a href="https://angularjs.org/">Angular</a> I&rsquo;ve come to think there must be a better way of building software that doesn&rsquo;t involve 1000s of <span class="inlineCode">node_modules</span> dependencies.</p>
+
+<p>At the same time I&rsquo;ve been thinking about programming games in Javascript. This isn&rsquo;t exactly a new idea in 2019, but after 10 years of web development I still haven&rsquo;t made a game. Games are the reason computers were invented, so it makes sense to start creating my own.</p>
+
+<p>A basic component of any software is a state management system. We all know things like <a href="https://redux.js.org/">Redux</a>, <a href="https://mobx.js.org/">MobX</a>, <a href="https://vuex.vuejs.org/">VueX</a> exist and do the job of state management well. But after years of front-end dev and <a href="https://www.drupal.org/">Drupal</a> work, I&rsquo;m sick of sorting out errors deep within the guts of a framework or the tedium of coming back to a project and needing to upgrade all the dependencies to get started working. So I decided a first step in making games would be to roll my own <a href="https://github.com/tmbritton/state-manager">state management library</a>.</p>
+
+<p>I wanted two things in a state management system, a pubsub component for events and a centralized data store. Also, to completely contradict my opening statement about dependencies, I wrote it in <a href="https://www.typescriptlang.org/">Typescript</a>. I&rsquo;ve been using it at work recently and I find I really like the autocomplete features it provides to the text editor when you define your types.</p>
+
+<h2 id="pubsub">PubSub</h2>
+
+<p>First I created the <a href="https://github.com/tmbritton/state-manager/blob/master/src/pubsub/PubSub.ts">PubSub module</a>. This is a good &lsquo;ole <a href="https://developer.mozilla.org/en-US/docs/Glossary/IIFE">IIFE</a> module. I didn&rsquo;t use a class because we don&rsquo;t want multiple instantiations of the PubSub system in a codebase. That would break the functionality. You can see in the link to the code I provided, there are just a few methods. The meat of it are the <span class="inlineCode">publish()</span> and <span class="inlineCode">subscribe()</span> methods. A basic use of this module is in the tests. Yes, I actually tested a personal project!</p>
+
+<pre><code>test(&quot;Publishing an event&quot;, () =&gt; {
+    const type = &quot;test&quot;;
+
+    PubSub.subscribe(type, (payload) =&gt; {
+        expect(payload.test).toBe(2);
+    });
+
+    PubSub.publish(type, {test: 2});
+});
+</code></pre>
+
+<p>Basically you subscribe to an event type, this case the type is &ldquo;test&rdquo;. Then you publish an event of the same type with a payload object. This object is then passed to the callback provided to the subscribe method and it acts on the payload. Simple, right?</p>
+
+<h2 id="store">Store</h2>
+
+<p>The <a href="https://github.com/tmbritton/state-manager/blob/master/src/store/Store.ts">store module</a> is where the data is held. I did use a class here, but it&rsquo;s debatable whether you&rsquo;d ever want multiple instantiations of the Store in the application. There may be use cases. ¯\_(ツ)_/¯ The flow here is you call the <span class="inlineCode">commit()</span> function with a type of mutation as the first parameter and a payload for the mutation to act on as the second parameter. The change is then published by the PubSub component.</p>
+
+<h3 id="mutations">Mutations</h3>
+
+<p>I lifted mutations directly from VueX. They are functions you define that accept a payload and make changes to state. You don&rsquo;t change state outside of mutations and you only call mutations via the <span class="inlineCode">commit()</span> function. None of this is strictly enforced since I&rsquo;m making this library for myself. But that&rsquo;s how it&rsquo;s supposed to work.</p>
+
+<h2 id="summation">Summation</h2>
+
+<p>That was a brief introduction on how I put together a simple state management system. I plan to use it in upcoming game projects. It could be used in web development projects as well, but I&rsquo;d probably want to roll my own 2-way binding and virtual dom to go along with it. If you&rsquo;d like to read a better article with a similar take, <a href="https://css-tricks.com/build-a-state-management-system-with-vanilla-javascript/">check out this one on CSS Tricks</a>.</p>
+
+</article>
+
+
+    </div>
+<div class="footer">
+    <a href="https://github.com/tmbritton" rel="nofollow" title="Github Profile">
+        <img src="/img/github.png" width="32px" height="32px" class="footer-icon">
+    </a>
+    
+    
+
+    
+    
+</div>
+</body>
+
+</html>

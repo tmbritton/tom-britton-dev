@@ -2,6 +2,7 @@ baseURL = "https://tom.britton.rocks"
 languageCode = "en-us"
 title = "Tom Britton Rocks"
 theme = "simple-hugo-theme"
+publishDir = "docs"
 
 [params] 
   custom_css = ["css/tbr.css"]
