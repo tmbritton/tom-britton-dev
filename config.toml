@@ -1,6 +1,6 @@
-baseURL = "https://tom.britton.rocks"
+baseURL = "https://tom.britton.dev"
 languageCode = "en-us"
-title = "Tom Britton Rocks"
+title = "Tom Britton Dot Dev"
 theme = "simple-hugo-theme"
 publishDir = "docs"
 
